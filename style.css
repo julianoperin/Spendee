@@ -22,12 +22,17 @@ body {
 
 .container {
   margin: 30px auto;
-  width: 350px;
+  width: 50%;
+}
+
+.balance {
+  color: blue;
 }
 
 h1 {
   letter-spacing: 1px;
   margin: 0;
+  text-align: center;
 }
 
 h3 {
@@ -39,6 +44,10 @@ h3 {
 h4 {
   margin: 0;
   text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
 .inc-exp-container {
@@ -63,6 +72,14 @@ h4 {
   font-size: 22px;
   letter-spacing: 1px;
   /* margin: 5px 0; */
+}
+
+.red {
+  padding: 8px 10px;
+  background: #e3766a;
+  font-size: 1.3rem;
+  text-align: center;
+  border-radius: 10px;
 }
 
 .money.plus {

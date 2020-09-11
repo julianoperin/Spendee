@@ -5,6 +5,7 @@ const list = document.getElementById("list");
 const form = document.getElementById("form");
 const text = document.getElementById("text");
 const amount = document.getElementById("amount");
+const alert = document.getElementById("alert");
 
 const dummyTransactions = [
   { id: 1, text: "Flower", amount: -20 },
@@ -15,16 +16,46 @@ const dummyTransactions = [
 
 let transactions = dummyTransactions;
 
-//  Add transactions to DOM list
+//  Add transactions
+function addTransaction(e) {
+  e.preventDefault();
+  if (text.value.trim() === "" || amount.value.trim() === "") {
+    //! DISPLAY ALERT
+    const red = document.createElement("h2");
+    red.innerText = "The fields cannot be blank!";
+    red.classList.add("red");
+    alert.appendChild(red);
 
-// Add transactions to DOM list
+    setTimeout(function () {
+      alert.removeChild(red);
+    }, 3000);
+  } else {
+    const transaction = {
+      id: generateID(),
+      text: text.value,
+      amount: amount.value,
+    };
+    transactions.push(transaction);
+    addTransactionDOM(transaction);
+    updateValues();
+    text.value = "";
+    amount.value = "";
+  }
+}
+
+//! GENERATE ID
+function generateID() {
+  return Math.floor(Math.random() * 1000000000000);
+}
+
+//! Add transactions to DOM list
 function addTransactionDOM(transaction) {
-  // Get sign
+  //! Get sign
   const sign = transaction.amount < 0 ? "-" : "+";
 
   const item = document.createElement("li");
 
-  // Add class based on value
+  //! Add class based on value
   item.classList.add(transaction.amount < 0 ? "minus" : "plus");
 
   item.innerHTML = `
@@ -38,11 +69,38 @@ function addTransactionDOM(transaction) {
   list.appendChild(item);
 }
 
-// Init app
+//! Update the balance
+function updateValues() {
+  const amounts = transactions.map((transaction) => transaction.amount);
+
+  const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
+
+  const income = amounts
+    .filter((item) => item > 0)
+    .reduce((acc, item) => (acc += item), 0)
+    .toFixed(2);
+
+  const expense =
+    amounts
+      .filter((item) => item < 0)
+      .reduce((acc, item) => (acc += item), 0)
+      .toFixed(2) * -1;
+
+  balance.innerText = `$${total}`;
+  money_plus.innerText = `$${income}`;
+  money_minus.innerText = `-$${expense}`;
+
+  console.log(expense);
+}
+
+//! Init app
 function init() {
   list.innerHTML = "";
 
   transactions.forEach(addTransactionDOM);
+  updateValues();
 }
 
 init();
+
+form.addEventListener("submit", addTransaction);
